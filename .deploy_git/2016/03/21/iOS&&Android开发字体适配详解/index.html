@@ -1,0 +1,828 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="基本概念dpi &amp;amp;&amp;amp; ppi
+dpi (dots per inch) 打印分辨率 （每英寸所能打印的点数，即打印精度）
+ppi (pixels per inch) 图像分辨率 （在图像中，每英寸所包含的像素数目）
+
+ppi换算公式(dpi一样)12PPI = √（长度像素数² + 宽度像素数²） / 屏幕对角线英寸数举个简单的栗子，iphone5的ppi是多少？ppi=√（1136">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS&&Android开发字体适配详解">
+<meta property="og:url" content="http://istig.space/2016/03/21/iOS&&Android开发字体适配详解/index.html">
+<meta property="og:site_name" content="iStig">
+<meta property="og:description" content="基本概念dpi &amp;amp;&amp;amp; ppi
+dpi (dots per inch) 打印分辨率 （每英寸所能打印的点数，即打印精度）
+ppi (pixels per inch) 图像分辨率 （在图像中，每英寸所包含的像素数目）
+
+ppi换算公式(dpi一样)12PPI = √（长度像素数² + 宽度像素数²） / 屏幕对角线英寸数举个简单的栗子，iphone5的ppi是多少？ppi=√（1136">
+<meta property="og:image" content="http://7xryq9.com1.z0.glb.clouddn.com/%E9%A6%96%E9%A1%B5%E6%94%B9%E7%89%882_spec.png">
+<meta property="og:image" content="http://7xryq9.com1.z0.glb.clouddn.com/360video%E8%A7%86%E9%A2%91%E8%AF%A6%E6%83%85_spec.png">
+<meta property="og:updated_time" content="2016-03-24T10:23:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS&&Android开发字体适配详解">
+<meta name="twitter:description" content="基本概念dpi &amp;amp;&amp;amp; ppi
+dpi (dots per inch) 打印分辨率 （每英寸所能打印的点数，即打印精度）
+ppi (pixels per inch) 图像分辨率 （在图像中，每英寸所包含的像素数目）
+
+ppi换算公式(dpi一样)12PPI = √（长度像素数² + 宽度像素数²） / 屏幕对角线英寸数举个简单的栗子，iphone5的ppi是多少？ppi=√（1136">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> iOS&&Android开发字体适配详解 | iStig </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">iStig</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'vcdgDx91-SnsqyGVCXvx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS&&Android开发字体适配详解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-21T14:06:48+08:00" content="2016-03-21">
+              2016-03-21
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/21/iOS&&Android开发字体适配详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/21/iOS&&Android开发字体适配详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="dpi-amp-amp-ppi"><a href="#dpi-amp-amp-ppi" class="headerlink" title="dpi &amp;&amp; ppi"></a>dpi &amp;&amp; ppi</h3><ul>
+<li><code>dpi</code> (dots per inch) 打印分辨率 （每英寸所能打印的点数，即打印精度）</li>
+<li><code>ppi</code> (pixels per inch) 图像分辨率 （在图像中，每英寸所包含的像素数目）</li>
+</ul>
+<h4 id="ppi换算公式-dpi一样"><a href="#ppi换算公式-dpi一样" class="headerlink" title="ppi换算公式(dpi一样)"></a>ppi换算公式(dpi一样)</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PPI = √（长度像素数² + 宽度像素数²） / 屏幕对角线英寸数</span><br><span class="line">举个简单的栗子，iphone5的ppi是多少？ppi=√（<span class="number">1136</span>px² + <span class="number">640</span>px²）/<span class="number">4</span> in=<span class="number">326</span>ppi（视网膜Retina屏）.这样大家就能够明白ppi和px的关系。</span><br></pre></td></tr></table></figure>
+<h3 id="dp-amp-amp-sp"><a href="#dp-amp-amp-sp" class="headerlink" title="dp &amp;&amp; sp"></a>dp &amp;&amp; sp</h3><ul>
+<li><code>dp</code> (Density-independent pixels) 以160PPI屏幕为标准，则1dp=1px。</li>
+</ul>
+<h4 id="dp-amp-amp-px的换算公式"><a href="#dp-amp-amp-px的换算公式" class="headerlink" title="dp&amp;&amp;px的换算公式"></a>dp&amp;&amp;px的换算公式</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dp*ppi/<span class="number">160</span> = px</span><br><span class="line">比如<span class="number">1</span>dp x <span class="number">320</span>ppi/<span class="number">160</span> = <span class="number">2</span>px</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>sp</code> (Scale-independent pixels) 安卓的字体单位，以160PPI屏幕为标准，当字体大小为 100%时， 1sp=1px。</li>
+</ul>
+<h4 id="sp-amp-amp-px换算公式："><a href="#sp-amp-amp-px换算公式：" class="headerlink" title="sp&amp;&amp;px换算公式："></a>sp&amp;&amp;px换算公式：</h4><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sp</span>*ppi/<span class="number">160</span> = px</span><br><span class="line"></span><br><span class="line">在Android设计原则中，有提到这两个单位，他建议文字的尺寸一律用<span class="keyword">sp</span>单位，非文字的尺寸一律使用<span class="keyword">dp</span>单位。例如textSize=”<span class="number">16</span><span class="keyword">sp</span>”、layout_width=”<span class="number">60</span><span class="keyword">dp</span>”。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>in</code> (inch）因为现实中我们经常提到4英寸手机或者5.5英寸大屏手机，而这个尺寸是用户真正感受到的物理大小，所有提到不同尺寸的屏幕不仅仅是分辨率或者像素，而更多的是英寸。</li>
+</ul>
+<h3 id="pt-amp-amp-px"><a href="#pt-amp-amp-px" class="headerlink" title="pt &amp;&amp; px"></a>pt &amp;&amp; px</h3><ul>
+<li><code>pt</code> (point) 是印刷行业常用单位,(磅值)是物理长度单位，指的是72分之一英寸。手机上看来同一大小的字磅值是一样的. 然而换算成不同手机字体px不一样。（px=pt*dpi/72）。</li>
+<li><code>px</code> (pixel) 像素，是屏幕上显示数据的最基本的点。1px＝1/96英寸</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">dpi换算参上</span><br><span class="line"><span class="function">android <span class="title">G10</span><span class="params">(<span class="number">4</span>英寸)</span> 480 * 800  dpi </span>= <span class="number">233</span></span><br><span class="line">iphone4(<span class="number">3.5</span>英寸) <span class="number">640</span> * <span class="number">960</span> dpi = <span class="number">329</span></span><br><span class="line"></span><br><span class="line">可见：看起来同一大小的字(这是重点)，比如<span class="number">12</span>pt,</span><br><span class="line">G10上的      px = <span class="number">12</span> * <span class="number">233</span> / <span class="number">72</span> = <span class="number">38</span>   </span><br><span class="line">iphone4上的  px = <span class="number">12</span> * <span class="number">329</span> / <span class="number">72</span> = <span class="number">54.8</span></span><br><span class="line"></span><br><span class="line"> 附公式  px = pt * PPI / <span class="number">72</span></span><br><span class="line"> 亦或    pt = px * <span class="number">72</span> / PPI</span><br><span class="line"></span><br><span class="line">字体大小不能根据一种分辨率定死px值。对应的分辨率需要对应不同的px。</span><br><span class="line">简单的办法：根据ai效果图的字体大小规定不同分辨率的磅值，对应的手机再换算成自用的单位。</span><br><span class="line">android的字体建议用sp或dp,可以根据屏幕缩放.用px的话适配就累死了。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>em</code> 其实就是％。因为当网页中的字体没有给出实际的px或pt定义的话，会有一个默认值：12pt即16px，对应浏览器中“字体大小”中的“中等”，以这个为标准，变大或缩小。（只适用于IE，在FF中，即便定义px或pt也都可以变大变小）<br>所以，从这个概念上看，em才是真正的“相对单位”（百分比嘛，当然是相对），而px和pt都是绝对单位（都有固定值）。</li>
+</ul>
+<h2 id="实例分析"><a href="#实例分析" class="headerlink" title="实例分析"></a>实例分析</h2><p><img src="http://7xryq9.com1.z0.glb.clouddn.com/%E9%A6%96%E9%A1%B5%E6%94%B9%E7%89%882_spec.png" alt="例子"></p>
+<p><img src="http://7xryq9.com1.z0.glb.clouddn.com/360video%E8%A7%86%E9%A2%91%E8%AF%A6%E6%83%85_spec.png" alt="例子"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">现在开发中设计师提供的标注往往是两倍于真实的手机屏幕分辨率</span><br><span class="line">因此基本字号如果标注<span class="number">36</span>px则对应选择<span class="number">18</span>pt字号</span><br><span class="line">对于某些需要字号进行等比处理的地方可以采用如下例子:</span><br><span class="line">iPhone6宽／iphone5宽 ＝ ui标注px ／ 等比px</span><br><span class="line"><span class="number">375</span> / <span class="number">320</span> ＝ <span class="number">36</span>px ／ 等比px</span><br><span class="line">等比px约等于<span class="number">30.72</span></span><br><span class="line">等比pt约等于<span class="number">15.36</span> ＝ <span class="number">15</span>pt</span><br><span class="line">所以iPhone6中<span class="number">18</span>pt字号 在iPhone5中使用<span class="number">15</span>pt</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料-amp-amp-扩展阅读"><a href="#参考资料-amp-amp-扩展阅读" class="headerlink" title="参考资料&amp;&amp;扩展阅读"></a>参考资料&amp;&amp;扩展阅读</h2><p><a href="http://www.woshipm.com/pd/43600.html" target="_blank" rel="external">DPI/PPI/dp/sp/px/pt 移动设计手册</a></p>
+<p><a href="http://www.zcool.com.cn/article/ZMTQ0NzA4.html" target="_blank" rel="external">IOS字体规范与多屏幕适配(1)</a></p>
+<p><a href="http://www.zcool.com.cn/article/ZMTQ0OTQw.html" target="_blank" rel="external">IOS字体规范与多屏幕适配(2)</a></p>
+<p><a href="http://www.cocoachina.com/bbs/read.php?tid=102801&amp;fpage=212" target="_blank" rel="external">UIFont字体大小，字号说明，最全了</a></p>
+<p><a href="https://www.douban.com/note/155032221/" target="_blank" rel="external">PT与PX区别</a></p>
+<p><a href="http://blog.csdn.net/phunxm/article/details/42174937" target="_blank" rel="external">iPhone屏幕尺寸、分辨率及适配</a></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/16/2015-3-16-我的作品-VR管家/" rel="next" title="我的作品-VR管家">
+                <i class="fa fa-chevron-left"></i> 我的作品-VR管家
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/21/惠租车的那些事/" rel="prev" title="惠租车的那些事">
+                惠租车的那些事 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/03/21/iOS&&Android开发字体适配详解/"
+     data-title="iOS&&Android开发字体适配详解"
+     data-content=""
+     data-url="http://istig.space/2016/03/21/iOS&&Android开发字体适配详解/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/21/iOS&&Android开发字体适配详解/"
+           data-title="iOS&&Android开发字体适配详解" data-url="http://istig.space/2016/03/21/iOS&&Android开发字体适配详解/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="iStig" />
+          <p class="site-author-name" itemprop="name">iStig</p>
+          <p class="site-description motion-element" itemprop="description">C'est la vie</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/iStig" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iStigzjm" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> twitter
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/1871974834?is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Links</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dpi-amp-amp-ppi"><span class="nav-number">1.1.</span> <span class="nav-text">dpi && ppi</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ppi换算公式-dpi一样"><span class="nav-number">1.1.1.</span> <span class="nav-text">ppi换算公式(dpi一样)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dp-amp-amp-sp"><span class="nav-number">1.2.</span> <span class="nav-text">dp && sp</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dp-amp-amp-px的换算公式"><span class="nav-number">1.2.1.</span> <span class="nav-text">dp&&px的换算公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sp-amp-amp-px换算公式："><span class="nav-number">1.2.2.</span> <span class="nav-text">sp&&px换算公式：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pt-amp-amp-px"><span class="nav-number">1.3.</span> <span class="nav-text">pt && px</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例分析"><span class="nav-number">2.</span> <span class="nav-text">实例分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料-amp-amp-扩展阅读"><span class="nav-number">3.</span> <span class="nav-text">参考资料&&扩展阅读</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">iStig</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"istig"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+
+</body>
+</html>
